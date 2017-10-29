@@ -11,6 +11,8 @@ var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 })
+
+/*const connector = new builder.ChatConnector()*/
 const bot = new builder.UniversalBot(connector)
 
 server.post('/api/messages', connector.listen())
@@ -19,6 +21,9 @@ server.post('/api/messages', connector.listen())
 
 //series of dialogs
 bot.dialog('/', [
+    (session,args,next) => {
+        session.send('hi')
+    },
     (session, args, next) => {
         if (session.userData.name) {
             next()
