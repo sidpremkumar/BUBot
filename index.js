@@ -4,17 +4,19 @@ const restify = require('restify')
 
 //setup restify
 const server = restify.createServer()
-server.listen(3978, () => {
-    console.log('restify listening on port 3978')
+server.listen(8000, () => {
+    console.log('restify listening on port 8000')
 })
 
 var connector = new builder.ChatConnector({
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+    appId: 'b5eb8eff-d08f-415c-8ea2-c1d8b61ddf88',
+    appPassword: 'mecteTBY264txILEM79/?!}'
 })
 
 /*const connector = new builder.ChatConnector()*/
-const bot = new builder.UniversalBot(connector)
+const bot = new builder.UniversalBot(connector, function (session) {
+    session.beginDialog('/')
+})
 
 server.post('/api/messages', connector.listen())
 
@@ -22,9 +24,6 @@ server.post('/api/messages', connector.listen())
 
 //series of dialogs
 bot.dialog('/', [
-    (session,args,next) => {
-        session.send('hi')
-    },
     (session, args, next) => {
         if (session.userData.name) {
             next()
